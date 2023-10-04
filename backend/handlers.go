@@ -9,7 +9,7 @@ import (
 func HandleRoot(c *gin.Context) {
 	sessionTokenBytes, ok := c.MustGet("session").([]byte)
 	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "Session data not found",
 		})
 		return
@@ -17,7 +17,7 @@ func HandleRoot(c *gin.Context) {
 
 	var session Session
 	if err := json.Unmarshal(sessionTokenBytes, &session); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "Failed to deserialize session data",
 		})
 		return
