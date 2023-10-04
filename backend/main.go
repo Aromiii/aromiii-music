@@ -6,13 +6,7 @@ import (
 
 func main() {
 	r := gin.Default()
-
 	r.Use(Authenticate)
-
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello from Aromiii Music",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.GET("/", HandleRoot)
+	r.Run()
 }

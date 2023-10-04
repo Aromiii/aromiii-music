@@ -6,9 +6,23 @@ import (
 	"io"
 	"net/http"
 	"net/http/cookiejar"
+	"time"
 )
 
 var Url = "http://localhost:3000"
+
+type Session struct {
+	User struct {
+		Email       string `json:"email"`
+		Image       any    `json:"image"`
+		ID          string `json:"id"`
+		FirstName   string `json:"firstName"`
+		LastName    string `json:"lastName"`
+		Username    string `json:"username"`
+		DisplayName string `json:"displayName"`
+	} `json:"user"`
+	Expires time.Time `json:"expires"`
+}
 
 func Authenticate(c *gin.Context) {
 	// Create a cookie jar to manage cookies
@@ -22,7 +36,7 @@ func Authenticate(c *gin.Context) {
 	// Create a GET request
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/auth/session", Url), nil)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(500, gin.H{"error": "Error creating request to authentication service"})
 		return
 	}
 
@@ -44,24 +58,24 @@ func Authenticate(c *gin.Context) {
 	}
 	defer resp.Body.Close()
 
-	// Read the response body into a []byte
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		c.AbortWithStatusJSON(400, gin.H{
-			"message": "Unable to read session data",
+			"error": "Unable to read session data",
 		})
 		return
 	}
 
 	if string(body) == "{}" {
 		c.AbortWithStatusJSON(401, gin.H{
-			"message": "Authentication service didn't return user data",
+			"error": "Authentication service didn't return user data",
 		})
 		return
 	}
 
-	// Now you can work with the 'body' []byte as needed
-	fmt.Println("Response Body:", string(body))
+	println(string(body))
+
+	c.Set("session", body)
 
 	c.Next()
 }
