@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .aromiii-button {
+        @apply bg-red-500 rounded-lg p-2 text-white text-xl px-5 shadow
+    }
+
+    .bg-color {
+        @apply bg-gray-200 dark:bg-gray-700
+    }
+
+    .base-color {
+        @apply bg-white dark:bg-gray-900 dark:text-white text-black
+    }
+}
+
+@layer base {
+    input, textarea {
+        @apply bg-gray-200 dark:bg-gray-500 dark:text-white text-black
+    }
+}
