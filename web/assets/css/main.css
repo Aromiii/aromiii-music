@@ -17,6 +17,10 @@
 }
 
 @layer base {
+    svg {
+        @apply fill-black dark:fill-white
+    }
+
     input, textarea {
         @apply bg-gray-200 dark:bg-gray-500 dark:text-white text-black
     }
