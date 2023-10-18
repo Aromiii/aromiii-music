@@ -23,7 +23,5 @@ func HandleRoot(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": session,
-	})
+	c.File("./music/rickroll.mp3")
 }
