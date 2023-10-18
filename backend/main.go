@@ -6,7 +6,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.Use(Authenticate)
+	//r.Use(Authenticate)
 	r.GET("/", HandleRoot)
 	r.Run()
 }
