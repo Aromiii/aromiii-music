@@ -6,7 +6,14 @@ import (
 
 func main() {
 	r := gin.Default()
-	//r.Use(Authenticate)
+
+	// Public routes
+	r.GET("/stream/:id", HandleStream)
+
+	r.Use(Authenticate)
+
+	// Routes behind auth
 	r.GET("/", HandleRoot)
+
 	r.Run()
 }

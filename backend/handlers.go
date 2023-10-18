@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
@@ -8,7 +10,7 @@ import (
 )
 
 func HandleRoot(c *gin.Context) {
-	/*sessionTokenBytes, ok := c.MustGet("session").([]byte)
+	sessionTokenBytes, ok := c.MustGet("session").([]byte)
 	if !ok {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"error": "Session data not found",
@@ -22,14 +24,24 @@ func HandleRoot(c *gin.Context) {
 			"error": "Failed to deserialize session data",
 		})
 		return
-	}*/
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Hello from behind auth",
+	})
+}
+
+func HandleStream(c *gin.Context) {
+
+	// Get the value of the "file" parameter from the URL
+	id := c.Param("id")
 
 	// Set the response headers to indicate audio streaming.
 	c.Header("Content-Type", "audio/mpeg")
 	c.Header("Transfer-Encoding", "chunked")
 
 	// Replace "your-audio-file.mp3" with the path to your MP3 file.
-	filePath := "./music/rickroll.mp3"
+	filePath := fmt.Sprintf("./music/%s.mp3", id)
 
 	// Open the MP3 file.
 	file, err := os.Open(filePath)
